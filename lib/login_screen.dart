@@ -103,8 +103,8 @@ class _LoginPageState extends State<LoginPage> {
         ),
         child: Center(
           child: Container(
-            height: 380.0,
-            width: 420.0,
+            height: 500.0,
+            width: 380.0,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(5),
@@ -113,6 +113,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                Text("LOGIN", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                 Form(
                   key: formKey,
                   child: Column(
@@ -120,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(left: 25, right: 25),
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 30),
                         child: Container(
                           height: 45,
                           decoration: BoxDecoration(
@@ -131,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                             child: TextFormField(
                               decoration: InputDecoration(hintText: "Email"),
-                              validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
+                              //validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
                               onChanged: (value) {
                                 this.email = value;
                               },
@@ -140,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 5),
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 5),
                         child: Container(
                           height: 45,
                           decoration: BoxDecoration(
@@ -152,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextFormField(
                               obscureText: true,
                               decoration: InputDecoration(hintText: "Password"),
-                              validator: (value) => value.isEmpty ? 'Password is required' : null,
+                              //validator: (value) => value.isEmpty ? 'Password is required' : null,
                               onChanged: (value) {
                                 this.password = value;
                               },
@@ -173,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                             //width: 100,
                             decoration: BoxDecoration(
                               color: Color.fromRGBO(203, 232, 106, 1),
-                              borderRadius: BorderRadius.circular(15)
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             child: Center(
                               child: Text('Sign in'),

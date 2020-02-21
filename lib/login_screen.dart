@@ -96,65 +96,96 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Container(
-          height: 250.0,
-          width: 300.0,
-          child:  Column(
-            children: <Widget>[
-              Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25),
-                      child: Container(
-                        height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(hintText: "Email"),
-                          validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
-                          onChanged: (value) {
-                            this.email = value;
-                          },
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.teal
+          //image: DecorationImage(image: AssetImage("images/laika-notebooks-pONH9yZ-wXg-unsplash.jpg"), fit: BoxFit.cover),
+        ),
+        child: Center(
+          child: Container(
+            height: 380.0,
+            width: 420.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 25, right: 25),
+                        child: Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(200, 200, 200, 1),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(hintText: "Email"),
+                              validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
+                              onChanged: (value) {
+                                this.email = value;
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 5),
-                      child: Container(
-                        height: 50,
-                        child: TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(hintText: "Password"),
-                          validator: (value) => value.isEmpty ? 'Password is required' : null,
-                          onChanged: (value) {
-                            this.password = value;
-                          },
+                      Padding(
+                        padding: EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 5),
+                        child: Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(200, 200, 200, 1),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                            child: TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(hintText: "Password"),
+                              validator: (value) => value.isEmpty ? 'Password is required' : null,
+                              onChanged: (value) {
+                                this.password = value;
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if(checkFields()) {
-                          AuthService().signIn(email, password);
-                        }
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.2),
-                        ),
-                        child: Center(
-                          child: Text('Sign in'),
+                      InkWell(
+                        onTap: () {
+                          if(checkFields()) {
+                            AuthService().signIn(email, password);
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25.0, right: 25.0, top: 50),
+                          child: Container(
+                            height: 45,
+                            //width: 100,
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(203, 232, 106, 1),
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Center(
+                              child: Text('Sign in'),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -162,7 +193,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context)=> (RegisterPage())));
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.create),
         backgroundColor: Colors.green,
       ),
     );

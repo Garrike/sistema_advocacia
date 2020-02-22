@@ -2,6 +2,7 @@
 //import 'package:firebase/firebase.dart' as fb;
 //import 'package:firebase/firestore.dart' as fs;
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
@@ -130,7 +131,7 @@ class AuthService {
       resBody["vara"] = vara;
 
       final response = 
-        await http.post("https://projetopds-72fa1.firebaseapp.com/api/v1/archives", 
+        await http.post("https://projetopds-72fa1.firebaseapp.com/api/v1/processes", 
         headers: {"Content-Type": "application/json"},
         body: json.encode(resBody));
     } catch(e) {
@@ -141,5 +142,20 @@ class AuthService {
     // print(statusCode);
     // print(response.body);
     return true;
+  }
+
+  Future getProcess() async {
+    try{
+      final response = await http.get(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/processes'
+      );
+      // print(response.body);
+      // print('\n\n');
+      List<Process> processes = json.decode(response.body)['processos'];
+      
+      return processes;
+    } catch(e) {
+      return null;
+    }
   }
 }

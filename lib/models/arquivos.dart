@@ -1,8 +1,8 @@
-class Arquivo {
+class Processo {
   final String advogado, oab, autor, cep, cidade, comarca, contato, cpf;
   final String data, protocolo, uf, vara;
 
-  Arquivo({
+  Processo({
     this.advogado, 
     this.oab, 
     this.autor, 
@@ -17,8 +17,8 @@ class Arquivo {
     this.vara
   });
 
-  factory Arquivo.fromJson(Map<String, dynamic> json) {
-    return Arquivo(
+  factory Processo.fromJson(Map<String, dynamic> json) {
+    return Processo(
       advogado: json['advogado'],
       oab: json['oab'],
       autor: json['autor'],

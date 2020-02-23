@@ -57,11 +57,8 @@ class AuthService {
     // print('\n\n');
     // print(user.name);
     // print('\n\n');
-    
     return user;
   }
-
-    
 
   //Sign out
   Future signOut() async {
@@ -145,17 +142,17 @@ class AuthService {
   }
 
   Future getProcess() async {
+    List<Process> processes = List<Process>();
     try{
       final response = await http.get(
         'https://projetopds-72fa1.firebaseapp.com/api/v1/processes'
       );
       // print(response.body);
       // print('\n\n');
-      List<Process> processes = json.decode(response.body)['processos'];
-      
-      return processes;
+      processes = json.decode(response.body)['processos'];
     } catch(e) {
       return null;
     }
+    return processes;
   }
 }

@@ -110,23 +110,62 @@ class _HomePageState extends State<HomePage> {
                                   if(snapshot.hasData){                                      
                                     return Expanded(
                                       child: Container(
-                                        color: Colors.grey,
+                                        color: Color.fromRGBO(226, 226, 226, 1),
                                         height: 400,
                                         child: ListView.builder(
                                           itemCount: snapshot.data.length,
                                           itemBuilder: (context, i) {
                                             List<Processo> processos = snapshot.data;
                                             print(i);
-                                            return Card(                                          
+                                            return Card(     
+                                              color: processos[i].status == "Aberto" ? Color.fromRGBO(221, 239, 215, 1) 
+                                              : Color.fromRGBO(239, 215, 215, 1),                                     
                                               child: InkWell(
                                                 splashColor: Colors.blue.withAlpha(30),
                                                 onTap: () {
                                                   print('Card tapped.');
                                                 },
                                                 child: Container(
-                                                  height: 80,
-                                                  child: ListTile(
-                                                    title: Text(processos[i].advogado),
+                                                  height: 100,
+                                                  child: Row(
+                                                    // crossAxisAlignment: CrossAxisAlignment.start,
+                                                    // mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Column(
+                                                        children: <Widget>[
+                                                          Text(i.toString()),
+                                                          // Container(
+                                                          //   color: Colors.teal,
+                                                          //   width: 70,
+                                                          //   height: 100,
+                                                          // ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(12.0),                                                          
+                                                            child: Center(
+                                                              child: CircleAvatar(
+                                                                child: Icon(Icons.person_pin, size: 15,),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Text(processos[i].autor),
+                                                        ],
+                                                      ),
+                                                      Expanded(
+                                                        child: Container(
+                                                          // color: Colors.amberAccent,
+                                                          height: 100,
+                                                        ),
+                                                      ),
+                                                      Column(
+                                                        children: <Widget>[
+                                                          Container(
+                                                            // color: Colors.teal,
+                                                            width: 70,
+                                                            height: 100,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ]
                                                   ),
                                                 ),
                                               ),
@@ -147,11 +186,11 @@ class _HomePageState extends State<HomePage> {
                                 }
                               ),
                               Container(
-                                width: 60,
+                                width: 80,
                               ),
                               Expanded(
                                 child: Container(
-                                  color: Colors.amber,
+                                  color: Colors.amberAccent,
                                   height: 100,
                                 ),
                               ),

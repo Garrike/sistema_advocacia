@@ -175,12 +175,6 @@ class AuthService {
           ));
         }
       });
-
-      // print("\n\n\n");
-      // print('\nPrint processes\n');
-      // processes.forEach((element) {
-      //   print(element.advogado);
-      // });
     } catch(e) {
       print(e);
       return null;

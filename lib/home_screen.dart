@@ -62,9 +62,10 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(top: 35.0, bottom: 35.0),
+                            padding: const EdgeInsets.only(left: 30, top: 35.0),
                             child: Text(
                               'Dashboard',
                               style: TextStyle(
@@ -77,54 +78,73 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 30, top: 50, bottom: 30),
+                            child: Container(
+                              height: 40,
+                              width: 350,
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(89, 154, 96, 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                                child: TextFormField(
+                                  decoration: InputDecoration(hintText: "Procurar Arquivo", fillColor: Colors.white),
+                                  onChanged: (value) {
+                                    print(value);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
                                 width: 30,
                               ),
-                              Expanded(
-                                child: Container(
-                                  height: 450,
-                                  child: 
-                                  // FutureBuilder(
-                                  //   future: AuthService().getProcess(),
-                                  //   builder: (context, snapshot) {
-                                  //     if(snapshot.hasData){
-                                  //       List<Processo> processos = snapshot.data;
-                                  //       ListView.builder(
-                                  //         itemCount: numberTruthList.length,
-                                  //         itemBuilder: (context, index) {
-                                  //           return Card(
-                                  //             child: ListTile(
-                                  //               title: Text(numberTruthList[index].toString()),
-                                  //             ),
-                                  //           );
-                                  //         },
-                                  //       );
-                                  //     }                                  
-                                  //   },
-                                  // ),
-                                  FutureBuilder(
-                                    future: AuthService().getProcess(),
-                                    builder: (context, snapshot) {
-                                      if(snapshot.hasData){
-                                        List<Processo> processos = snapshot.data;
-                                        print(processos.length);
-                                        ListView.builder(
-                                          itemCount: 6,
+                              FutureBuilder(
+                                future: AuthService().getProcess(user),
+                                builder: (context, snapshot) {
+                                  if(snapshot.hasData){                                      
+                                    return Expanded(
+                                      child: Container(
+                                        color: Colors.grey,
+                                        height: 400,
+                                        child: ListView.builder(
+                                          itemCount: snapshot.data.length,
                                           itemBuilder: (context, i) {
-                                            return Card(
-                                              child: ListTile(
-                                                title: Text(numberTruthList[i].toString()),
+                                            List<Processo> processos = snapshot.data;
+                                            print(i);
+                                            return Card(                                          
+                                              child: InkWell(
+                                                splashColor: Colors.blue.withAlpha(30),
+                                                onTap: () {
+                                                  print('Card tapped.');
+                                                },
+                                                child: Container(
+                                                  height: 80,
+                                                  child: ListTile(
+                                                    title: Text(processos[i].advogado),
+                                                  ),
+                                                ),
                                               ),
                                             );
                                           },
-                                        );
-                                      }
-                                    }
-                                  ),
-                                ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  return Expanded(
+                                    child: Container(
+                                      height: 100,
+                                      child: Center(
+                                        child: Text("Não há processos arquivados")
+                                      ),
+                                    ),
+                                  );
+                                }
                               ),
                               Container(
                                 width: 60,
@@ -138,42 +158,6 @@ class _HomePageState extends State<HomePage> {
                               Container(
                                 width: 30,
                               ),
-                              // Text("You are logged in ${snapshot.data.name}"),
-                              // SizedBox(height: 10.0),
-                              // Container(
-                              //   height: 40,
-                              //   width: 100,
-                              //   child: RaisedButton(
-                              //     onPressed: () {
-                              //       AuthService().signOut();
-                              //     },
-                              //     child: Center(
-                              //       child: Text("Sign out"),
-                              //     ),
-                              //     color: Color.fromRGBO(159, 230, 136, 1.0),
-                              //   ),
-                              // ),
-                              // Padding(
-                              //   padding: EdgeInsets.only(top: 10),
-                              //   child: Container(
-                              //     height: 40,
-                              //     width: 100,
-                              //     child: Center(
-                              //       child: RaisedButton(
-                              //         onPressed: () {
-                              //           // Navigator.push(
-                              //           //   context,
-                              //           //   MaterialPageRoute(builder: (context) => CreateArquivo()),
-                              //           // );
-                              //         },
-                              //         child: Center(
-                              //           child: Text("Adicionar Arquivo"),
-                              //         ),
-                              //         color: Color.fromRGBO(128, 182, 124, 1.0),
-                              //       ),
-                              //     ),
-                              //   ),
-                              // )
                             ],
                           ),
                         ],

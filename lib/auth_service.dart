@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:projetoPDS/home_screen.dart';
 import 'package:projetoPDS/login_screen.dart';
 
+import 'models/arquivos.dart';
 import 'models/user.dart';
 
 class AuthService {
@@ -51,7 +52,9 @@ class AuthService {
         password: userJson['password'],
         name: userJson['name'],
         office: userJson['office'],
-        userid: userJson['userid']
+        userid: userJson['userid'],
+        processes: userJson['processes'],
+        pending: userJson['pending']
       );
     }
     // print('\n\n');
@@ -135,22 +138,51 @@ class AuthService {
       print(e);
       return false;
     }
-    // int statusCode = response.statusCode;
-    // print(statusCode);
-    // print(response.body);
     return true;
   }
 
-  Future getProcess() async {
-    List<Process> processes = List<Process>();
+  Future getProcess(User user) async {
+    List<Processo> processes = List<Processo>();
     try{
       final response = await http.get(
         'https://projetopds-72fa1.firebaseapp.com/api/v1/processes'
       );
-      // print(response.body);
-      // print('\n\n');
-      processes = json.decode(response.body)['processos'];
+      
+      Map<String, dynamic> jsonResponse = json.decode(response.body)['processos'];
+
+      jsonResponse.forEach((key, value) {
+        bool result = false;
+        user.processes.forEach((element) {
+          if(element == key.toString()) result = true;
+        });
+        if(result) {
+          print(key);
+          processes.add(Processo(
+            advogado: value['advogado'],
+            oab: value['oab'],
+            autor: value['autor'],
+            cep: value['cep'],
+            cidade: value['cidade'],
+            comarca: value['comarca'],
+            contato: value['contato'],
+            cpf: value['cpf'],
+            data: value['data'],
+            protocolo: value['protocolo'],
+            uf: value['uf'],
+            vara: value['vara'],
+            archives: value['archives'],
+            status: value['status']
+          ));
+        }
+      });
+
+      // print("\n\n\n");
+      // print('\nPrint processes\n');
+      // processes.forEach((element) {
+      //   print(element.advogado);
+      // });
     } catch(e) {
+      print(e);
       return null;
     }
     return processes;

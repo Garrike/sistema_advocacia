@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 30, top: 50, bottom: 30),
+                            padding: EdgeInsets.only(left: 30, top: 50, bottom: 20),
                             child: Container(
                               height: 40,
                               width: 350,
@@ -132,36 +132,124 @@ class _HomePageState extends State<HomePage> {
                                                     // mainAxisAlignment: MainAxisAlignment.start,
                                                     children: [
                                                       Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: <Widget>[
-                                                          Text(i.toString()),
-                                                          // Container(
-                                                          //   color: Colors.teal,
-                                                          //   width: 70,
-                                                          //   height: 100,
-                                                          // ),
                                                           Padding(
-                                                            padding: const EdgeInsets.all(12.0),                                                          
+                                                            padding: const EdgeInsets.only(top: 5.0, left: 10, bottom: 5),
+                                                            child: Text('ID ${i.toString()}', style: TextStyle(fontSize: 14),),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 10),                                                          
                                                             child: Center(
-                                                              child: CircleAvatar(
-                                                                child: Icon(Icons.person_pin, size: 15,),
-                                                              ),
+                                                              child: Icon(Icons.person_pin, color: Colors.black, size: 48),
                                                             ),
                                                           ),
-                                                          Text(processos[i].autor),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(bottom: 10.0, left: 10),
+                                                            child: Text(
+                                                              processos[i].autor, 
+                                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                                            ),
+                                                          ),
                                                         ],
                                                       ),
                                                       Expanded(
                                                         child: Container(
+                                                          margin: const EdgeInsets.only(right: 10.0),
+                                                          alignment: Alignment.centerRight,
                                                           // color: Colors.amberAccent,
                                                           height: 100,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            mainAxisAlignment: MainAxisAlignment.center,
+                                                            children: <Widget>[
+                                                              Text(
+                                                                '${processos[i].archives.length.toString()}', 
+                                                                style: TextStyle(
+                                                                  fontSize: 24,
+                                                                  fontWeight: FontWeight.bold
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                'documentos',
+                                                                style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  fontWeight: FontWeight.bold
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                       Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
-                                                          Container(
-                                                            // color: Colors.teal,
-                                                            width: 70,
-                                                            height: 100,
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 15.0, left: 15.0, top: 5, bottom: 8),                                                          
+                                                            child: Center(
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  shape: BoxShape.circle,
+                                                                  border: Border.all(color: Colors.white),
+                                                                  color: Colors.white,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors.black.withOpacity(0.7),
+                                                                      offset: Offset(
+                                                                        1.0, // horizontal, move right 10
+                                                                        2.0, // vertical, move down 10
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                child: Icon(Icons.zoom_out_map, color: Colors.teal, size: 20,),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 8),                                                          
+                                                            child: Center(
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  shape: BoxShape.circle,
+                                                                  border: Border.all(color: Colors.white),
+                                                                  color: Colors.white,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors.black.withOpacity(0.7),
+                                                                      offset: Offset(
+                                                                        1.0, // horizontal, move right 10
+                                                                        2.0, // vertical, move down 10
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                child: Icon(Icons.restore_from_trash, color: Colors.teal, size: 20,),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 8),                                                          
+                                                            child: Center(
+                                                              child: Container(
+                                                                decoration: BoxDecoration(
+                                                                  shape: BoxShape.circle,
+                                                                  border: Border.all(color: Colors.white),
+                                                                  color: Colors.white,
+                                                                  boxShadow: [
+                                                                    BoxShadow(
+                                                                      color: Colors.black.withOpacity(0.7),
+                                                                      offset: Offset(
+                                                                        1.0, // horizontal, move right 10
+                                                                        2.0, // vertical, move down 10
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                child: Icon(Icons.share, color: Colors.teal, size: 22,),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ],
                                                       ),

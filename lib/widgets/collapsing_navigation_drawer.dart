@@ -42,7 +42,7 @@ class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
       animation: _animationController,
       builder: (context, widget) {
         return Material(
-          elevation: 80.0,
+          elevation: 0.0,
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

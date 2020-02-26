@@ -52,8 +52,7 @@ class _HomePageState extends State<HomePage> {
         // ),
         Scaffold(
           body: Stack(
-            children: <Widget>[
-              
+            children: <Widget>[        
               FutureBuilder(
                 future: AuthService().currentUser(),
                 builder: (context, AsyncSnapshot<User> snapshot) {
@@ -95,7 +94,11 @@ class _HomePageState extends State<HomePage> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                                     child: TextFormField(
-                                      decoration: InputDecoration(hintText: "Procurar Arquivo", fillColor: Colors.white),
+                                      decoration: InputDecoration(
+                                        hintText: "Procurar Arquivo", 
+                                        fillColor: Colors.white,
+                                        hintStyle: TextStyle(fontWeight: FontWeight.bold)
+                                      ),
                                       onChanged: (value) {
                                         print(value);
                                       },
@@ -114,8 +117,11 @@ class _HomePageState extends State<HomePage> {
                                     builder: (context, snapshot) {
                                       if(snapshot.hasData){                                      
                                         return Expanded(
-                                          child: Container(
-                                            color: Color.fromRGBO(226, 226, 226, 1),
+                                          child: Container(                                            
+                                            decoration: BoxDecoration(
+                                              color: Color.fromRGBO(226, 226, 226, 1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
                                             height: 430,
                                             child: ListView.builder(
                                               itemCount: snapshot.data.length,
@@ -191,72 +197,60 @@ class _HomePageState extends State<HomePage> {
                                                             mainAxisAlignment: MainAxisAlignment.center,
                                                             children: <Widget>[
                                                               Padding(
-                                                                padding: const EdgeInsets.only(right: 15.0, left: 15.0, top: 5, bottom: 8),                                                          
-                                                                child: Center(
-                                                                  child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                      shape: BoxShape.circle,
-                                                                      border: Border.all(color: Colors.white),
-                                                                      color: Colors.white,
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Colors.black.withOpacity(0.3),
-                                                                          offset: Offset(
-                                                                            0.0, // horizontal, move right 10
-                                                                            2.0, // vertical, move down 10
-                                                                          ),
-                                                                        )
-                                                                      ],
+                                                                padding: const EdgeInsets.only(right: 15.0, bottom: 8),
+                                                                child: ClipOval(
+                                                                  child: Material(
+                                                                    elevation: 60,
+                                                                    color: Colors.white, // button color                                                                    
+                                                                    shadowColor: Colors.black,
+                                                                    child: InkWell(
+                                                                      splashColor: Colors.teal, // inkwell color
+                                                                      child: SizedBox(width: 25, height: 25, child: Icon(Icons.zoom_out_map, color: Colors.teal, size: 20,),),
+                                                                      onTap: () {
+                                                                        print('zoom');
+                                                                      },
                                                                     ),
-                                                                    child: Icon(Icons.zoom_out_map, color: Colors.teal, size: 20,),
                                                                   ),
                                                                 ),
                                                               ),
                                                               Padding(
-                                                                padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 8),                                                          
-                                                                child: Center(
-                                                                  child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                      shape: BoxShape.circle,
-                                                                      border: Border.all(color: Colors.white),
-                                                                      color: Colors.white,
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Colors.black.withOpacity(0.3),
-                                                                          offset: Offset(
-                                                                            0.0, // horizontal, move right 10
-                                                                            2.0, // vertical, move down 10
-                                                                          ),
-                                                                        )
-                                                                      ],
+                                                                padding: const EdgeInsets.only(right: 15.0, bottom: 8),
+                                                                child: ClipOval(
+                                                                  child: Material(
+                                                                    elevation: 60,
+                                                                    color: Colors.white, // button color
+                                                                    shadowColor: Colors.black.withOpacity(0.6),
+                                                                    child: InkWell(
+                                                                      splashColor: Colors.teal, // inkwell color
+                                                                      child: SizedBox(
+                                                                        width: 25, 
+                                                                        height: 25,                                                                         
+                                                                        child: Icon(
+                                                                          Icons.restore_from_trash, 
+                                                                          color: Colors.teal, 
+                                                                          size: 20,
+                                                                        ),
+                                                                      ),
+                                                                      onTap: () {
+                                                                        print('trash');
+                                                                      },
                                                                     ),
-                                                                    child: Icon(Icons.restore_from_trash, color: Colors.teal, size: 20,),
                                                                   ),
                                                                 ),
                                                               ),
                                                               Padding(
-                                                                padding: const EdgeInsets.only(right: 15.0, left: 15.0, bottom: 8),                                                          
-                                                                child: Center(
-                                                                  child: Container(
-                                                                    decoration: BoxDecoration(
-                                                                      shape: BoxShape.circle,
-                                                                      border: Border.all(color: Colors.white),
-                                                                      color: Colors.white,
-                                                                      boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Colors.black.withOpacity(0.3),
-                                                                          offset: Offset(
-                                                                            0.0, // horizontal, move right 10
-                                                                            2.0, // vertical, move down 10
-                                                                          ),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    child: RaisedButton(
-                                                                      onPressed: () {
+                                                                padding: const EdgeInsets.only(right: 15.0),
+                                                                child: ClipOval(
+                                                                  child: Material(
+                                                                    elevation: 60,
+                                                                    color: Colors.white, // button color
+                                                                    shadowColor: Colors.black.withOpacity(0.6),
+                                                                    child: InkWell(
+                                                                      splashColor: Colors.teal, // inkwell color
+                                                                      child: SizedBox(width: 25, height: 25, child: Icon(Icons.share, color: Colors.teal, size: 20,),),
+                                                                      onTap: () {
                                                                         print('shared');
                                                                       },
-                                                                      child: Icon(Icons.share, color: Colors.teal, size: 22,)
                                                                     ),
                                                                   ),
                                                                 ),
@@ -327,7 +321,7 @@ class _HomePageState extends State<HomePage> {
                                                         Expanded(
                                                           child: Center(
                                                             child: Padding(
-                                                              padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+                                                              padding: const EdgeInsets.only(left: 60.0, right: 40.0),
                                                               child: Column(
                                                                 crossAxisAlignment: CrossAxisAlignment.center,
                                                                 mainAxisAlignment: MainAxisAlignment.center,

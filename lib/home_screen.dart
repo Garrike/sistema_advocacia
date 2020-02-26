@@ -21,7 +21,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _pageController = PageController(initialPage: 0, keepPage: false);
-
+  TextEditingController search = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -33,23 +33,6 @@ class _HomePageState extends State<HomePage> {
       controller: _pageController,
       physics: NeverScrollableScrollPhysics(),
       children: <Widget> [ 
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     Column(
-        //       children: <Widget>[
-        //         ListView.builder(
-        //           itemCount: test.length,
-        //           itemBuilder: (context, index) {
-        //             return Center(
-        //               child: Text(test[index]),
-        //             );
-        //           },
-        //         ),
-        //       ],
-        //     ),
-        //   ],
-        // ),
         Scaffold(
           body: Stack(
             children: <Widget>[        
@@ -69,13 +52,13 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.only(left: 30, top: 35.0),
+                                padding: const EdgeInsets.only(left: 30, top: 40.0),
                                 child: Text(
                                   'Dashboard',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold, 
-                                    fontSize: 28, 
-                                    color: Color.fromRGBO(0, 0, 0, 0.7),
+                                    fontSize: 32, 
+                                    color: Color.fromRGBO(0, 0, 0, 1),
                                     decoration: TextDecoration.underline,
                                     decorationColor: Colors.teal,
                                     decorationThickness: 2.85
@@ -86,23 +69,37 @@ class _HomePageState extends State<HomePage> {
                                 padding: EdgeInsets.only(left: 30, top: 50, bottom: 20),
                                 child: Container(
                                   height: 40,
-                                  width: 350,
+                                  width: 400,
                                   decoration: BoxDecoration(
                                     color: Color.fromRGBO(89, 154, 96, 1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                    child: TextFormField(
-                                      decoration: InputDecoration(
-                                        hintText: "Procurar Arquivo", 
-                                        fillColor: Colors.white,
-                                        hintStyle: TextStyle(fontWeight: FontWeight.bold)
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: 10.0, left: 10.0),
+                                          child: TextFormField(
+                                            controller: search,
+                                            decoration: InputDecoration(
+                                              hintText: "Procurar Arquivo", 
+                                              fillColor: Colors.white,
+                                              hintStyle: TextStyle(fontWeight: FontWeight.bold)
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      onChanged: (value) {
-                                        print(value);
-                                      },
-                                    ),
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        child: InkWell(
+                                          child: Icon(Icons.search), 
+                                          onTap: () {
+                                            print(search.text);
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -122,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                                               color: Color.fromRGBO(226, 226, 226, 1),
                                               borderRadius: BorderRadius.circular(8),
                                             ),
-                                            height: 430,
+                                            height: 500,
                                             child: ListView.builder(
                                               itemCount: snapshot.data.length,
                                               itemBuilder: (context, i) {
@@ -396,8 +393,11 @@ class _HomePageState extends State<HomePage> {
                                                 ),
                                               ),  
                                               Container(
-                                                height: 290,
-                                                color: Colors.amberAccent
+                                                height: 360,                                                  
+                                                decoration: BoxDecoration(
+                                                  color: Colors.amberAccent,
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
                                               ),                    
                                             ],
                                           ),

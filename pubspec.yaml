@@ -28,6 +28,7 @@ dependencies:
   firebase_core:
   toast: ^0.1.5
   http: any
+  charts_flutter: ^0.8.1
 
 dev_dependencies:
   flutter_test:

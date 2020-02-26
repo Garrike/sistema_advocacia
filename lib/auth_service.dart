@@ -181,4 +181,35 @@ class AuthService {
     }
     return processes;
   }
+
+  Future getProcessID(String id) async {
+    try{
+      final response = await http.get(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$id'
+      );
+      
+      var jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      Processo pendente = Processo(
+        advogado: jsonResponse['advogado'],
+        oab: jsonResponse['oab'],
+        autor: jsonResponse['autor'],
+        cep: jsonResponse['cep'],
+        cidade: jsonResponse['cidade'],
+        comarca: jsonResponse['comarca'],
+        contato: jsonResponse['contato'],
+        cpf: jsonResponse['cpf'],
+        data: jsonResponse['data'],
+        protocolo: jsonResponse['protocolo'],
+        uf: jsonResponse['uf'],
+        vara: jsonResponse['vara'],
+        archives: jsonResponse['archives'],
+        status: jsonResponse['status']
+      );
+      return pendente;
+    } catch(e) {
+      print(e);
+      return null;
+    }
+  }
 }

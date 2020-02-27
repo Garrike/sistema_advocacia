@@ -12,7 +12,7 @@ import 'auth_service.dart';
 import 'models/arquivos.dart';
 
 User user = User();
-
+Processo card = Processo();
 List<bool> numberTruthList = [false, true, true, true , true, true];
 
 class HomePage extends StatefulWidget {
@@ -134,13 +134,14 @@ class _HomePageState extends State<HomePage> {
                                                       splashColor: Colors.blue.withAlpha(30),
                                                       onTap: () {
                                                         print('Card tapped.');
-                                                        _pageController.animateToPage(2, duration: Duration(milliseconds: 100), curve: Curves.easeIn);
+                                                        setState(() {
+                                                          card = processos[i]; 
+                                                        });                                                        
+                                                        _pageController.jumpToPage(2);
                                                       },
                                                       child: Container(
                                                         height: 100,
                                                         child: Row(
-                                                          // crossAxisAlignment: CrossAxisAlignment.start,
-                                                          // mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
                                                             Column(
                                                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -396,9 +397,9 @@ class _HomePageState extends State<HomePage> {
                                                   ),
                                                 ),  
                                                 Container(
-                                                  height: 360,                                                  
+                                                  height: 365,                                                  
                                                   decoration: BoxDecoration(
-                                                    color: Colors.amberAccent,
+                                                    color: Color.fromRGBO(226, 226, 226, 1),
                                                     borderRadius: BorderRadius.circular(8),
                                                   ),
                                                 ),                    
@@ -438,7 +439,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         CreateArquivo(_pageController),
-        ProcessDetails(_pageController, 0, user),
+        ProcessDetails(_pageController, 0, user, card),
       ]
     );
   }

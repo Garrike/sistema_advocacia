@@ -68,7 +68,7 @@ class _CreateArquivoState extends State<CreateArquivo> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold, 
                         fontSize: 28, 
-                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        color: Color.fromRGBO(0, 0, 0, 1),
                         decoration: TextDecoration.underline,
                         decorationColor: Colors.teal,
                         decorationThickness: 2.85

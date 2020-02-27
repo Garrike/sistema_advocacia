@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetoPDS/auth_service.dart';
 import 'package:projetoPDS/home_screen.dart';
+import 'package:projetoPDS/top_bar.dart';
 import 'package:projetoPDS/widgets/collapsing_navigation_drawer.dart';
 import 'package:toast/toast.dart';
 
@@ -55,241 +56,245 @@ class _CreateArquivoState extends State<CreateArquivo> {
       body: Scaffold(
         body: Stack(
           children: <Widget>[
-            ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 95.0, top: 35.0, bottom: 35.0),
-                  child: Text(
-                    'Adicionar arquivos',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, 
-                      fontSize: 28, 
-                      color: Color.fromRGBO(0, 0, 0, 0.7),
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.teal,
-                      decorationThickness: 2.85
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: 1250,
-                    height: 280,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Color.fromRGBO(239, 239, 239, 1),
-                    ),
-                    child: Center(
-                      child: Text(
-                        '+Add File', 
-                        style: TextStyle(fontSize: 25.0, color: Colors.black45),
-                      )
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    width: 1250,
-                    // color: Color.fromRGBO(239, 239, 239, 1),
-                    margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 35.0, bottom: 10.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Color.fromRGBO(239, 239, 239, 1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Column(                      
-                        children: <Widget>[
-                          Form(
-                            key: formKey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController1,
-                                        decoration: InputDecoration(hintText: "Autor"),
-                                        // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
-                                        onChanged: (value) {
-                                          this.autor = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child:TextFormField(
-                                        controller: _textController2,
-                                        decoration: InputDecoration(hintText: "Nº Protocolo"),
-                                        // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
-                                        onChanged: (value) {
-                                          this.protocolo = value;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController3,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "CPF"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.cpf = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController4,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "Contato"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.contato = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController5,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "Data"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.data = value;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController6,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "Vara"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.vara = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController7,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "Comarca"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.comarca = value;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController8,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "Cidade"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.cidade = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController9,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "UF"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.uf = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController10,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "CEP"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.cep = value;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: TextFormField(
-                                        controller: _textController11,
-                                        obscureText: false,
-                                        decoration: InputDecoration(hintText: "Advogado Responsável"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.advogado = value;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: distance,
-                                    ),
-                                    Flexible(
-                                      child: TextFormField(
-                                        obscureText: false,
-                                        controller: _textController12,
-                                        decoration: InputDecoration(hintText: "OAB"),
-                                        // validator: (value) => value.isEmpty ? 'Password is required' : null,
-                                        onChanged: (value) {
-                                          this.oab = value;
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+            TopBar(),
+            Container(
+              margin: new EdgeInsets.only(left: 60.0),
+              child: ListView(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 95.0, top: 35.0, bottom: 35.0),
+                    child: Text(
+                      'Adicionar arquivos',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, 
+                        fontSize: 28, 
+                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.teal,
+                        decorationThickness: 2.85
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Center(
+                    child: Container(
+                      width: 1250,
+                      height: 280,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: Color.fromRGBO(239, 239, 239, 1),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '+Add File', 
+                          style: TextStyle(fontSize: 25.0, color: Colors.black45),
+                        )
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      width: 1250,
+                      // color: Color.fromRGBO(239, 239, 239, 1),
+                      margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 35.0, bottom: 10.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: Color.fromRGBO(239, 239, 239, 1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Column(                      
+                          children: <Widget>[
+                            Form(
+                              key: formKey,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController1,
+                                          decoration: InputDecoration(hintText: "Autor"),
+                                          // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
+                                          onChanged: (value) {
+                                            this.autor = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child:TextFormField(
+                                          controller: _textController2,
+                                          decoration: InputDecoration(hintText: "Nº Protocolo"),
+                                          // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
+                                          onChanged: (value) {
+                                            this.protocolo = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController3,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "CPF"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.cpf = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController4,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "Contato"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.contato = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController5,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "Data"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.data = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController6,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "Vara"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.vara = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController7,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "Comarca"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.comarca = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController8,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "Cidade"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.cidade = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController9,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "UF"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.uf = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController10,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "CEP"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.cep = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      Flexible(
+                                        child: TextFormField(
+                                          controller: _textController11,
+                                          obscureText: false,
+                                          decoration: InputDecoration(hintText: "Advogado Responsável"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.advogado = value;
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: distance,
+                                      ),
+                                      Flexible(
+                                        child: TextFormField(
+                                          obscureText: false,
+                                          controller: _textController12,
+                                          decoration: InputDecoration(hintText: "OAB"),
+                                          // validator: (value) => value.isEmpty ? 'Password is required' : null,
+                                          onChanged: (value) {
+                                            this.oab = value;
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             CollapsingNavigationDrawer(widget.pageController, 1, user)
           ],

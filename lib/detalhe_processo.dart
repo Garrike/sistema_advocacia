@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:projetoPDS/auth_service.dart';
+import 'package:projetoPDS/home_screen.dart';
 import 'package:projetoPDS/models/arquivos.dart';
 import 'package:projetoPDS/models/user.dart';
 import 'package:projetoPDS/top_bar.dart';
@@ -23,6 +25,10 @@ class _ProcessDetailsState extends State<ProcessDetails> {
       body: Stack(
         children: <Widget>[
           TopBar(),
+          widget.processo == null ?
+          Center(
+            child: Text('Não há pesquisas recentes'),
+          ) :
           ListView(
             children: <Widget>[
               Padding(
@@ -175,6 +181,7 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                                             child: SizedBox(width: 25, height: 25, child: Icon(Icons.share, color: Colors.teal, size: 20,),),
                                             onTap: () {
                                               print('shared');
+                                              showAlertDialog(context);
                                             },
                                           ),
                                         ),
@@ -607,6 +614,37 @@ class _ProcessDetailsState extends State<ProcessDetails> {
           CollapsingNavigationDrawer(widget.pageController, 2, widget.user)
         ],
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelaButton = FlatButton(
+      child: Text("Cancelar"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continuaButton = FlatButton(
+      child: Text("Continar"),
+      onPressed:  () {},
+    );
+
+    //configura o AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("AlertDialog"),
+      content: Text("Deseja continuar aprendendo Flutter ?"),
+      actions: [
+        cancelaButton,
+        continuaButton,
+      ],
+    );
+
+    //exibe o diálogo
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

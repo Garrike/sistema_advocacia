@@ -103,6 +103,8 @@ class AuthService {
     resBody["name"] = name;
     resBody["office"] = office;
     resBody["userid"] = userid;
+    resBody["processes"] = List<dynamic>();
+    resBody["pending"] = List<dynamic>();
 
     final response = 
       await http.post("https://projetopds-72fa1.firebaseapp.com/api/v1/contacts", 
@@ -211,5 +213,31 @@ class AuthService {
       print(e);
       return null;
     }
+  }
+
+  Future addPending(String idUser, String idProcesso) async {
+    List pending = List();
+    try{
+      final response = await http.get(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser'
+      );
+      pending = json.decode(response.body)['pending'];
+      print(pending);
+      print(pending.runtimeType);
+    } catch(e) {
+      return null;
+    }
+    pending.add(idProcesso);
+    if(pending != null){
+      var resBody = {};
+      resBody['pending'] = pending;
+      final response2 = await http.patch(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser',
+        body: json.encode(resBody)
+      );
+      print('response: ');
+      print(response2.body);
+    }
+    return user;
   }
 }

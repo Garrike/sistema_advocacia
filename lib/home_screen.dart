@@ -255,6 +255,7 @@ class _HomePageState extends State<HomePage> {
                                                                         child: SizedBox(width: 25, height: 25, child: Icon(Icons.share, color: Colors.teal, size: 20,),),
                                                                         onTap: () {
                                                                           print('shared');
+                                                                          showAlertDialog(context, user.processes[i]);
                                                                         },
                                                                       ),
                                                                     ),
@@ -453,11 +454,52 @@ class _HomePageState extends State<HomePage> {
     print(lista[0]);
     return lista[0];
   }
+}
 
-  Future addCard() async {
-    setState(() {
-      card = processos.last;
-    });
-    print(card.advogado);
-  }
+showAlertDialog(BuildContext context, String idProcesso) {
+  var textController = TextEditingController();
+  Widget cancelaButton = FlatButton(
+    child: Text("Cancelar"),
+    onPressed:  () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continuaButton = FlatButton(
+    child: Text("Compartilhar"),
+    onPressed:  () {
+      AuthService().addPending(textController.text, idProcesso);
+    },
+  );
+
+  //configura o AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Compartilhar Processo", style: TextStyle(fontWeight: FontWeight.bold),),
+    content: Container(
+      height: 70,
+      width: 400,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Informe o ID do advogado:"),
+          TextFormField(
+            controller: textController,
+            decoration: InputDecoration(hintText: "ID destinatário"),
+            validator: (value) => value.isEmpty ? 'ID obrigatório' : 'ID validado com sucesso',
+          ),
+        ],
+      ),
+    ),
+    actions: [
+      cancelaButton,
+      continuaButton,
+    ],
+  );
+
+  //exibe o diálogo
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

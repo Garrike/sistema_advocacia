@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    card = processos != null ? processos[0] : null;
+    card = null;
   }
 
   @override
@@ -127,7 +127,6 @@ class _HomePageState extends State<HomePage> {
                                                 itemCount: snapshot.data.length,
                                                 itemBuilder: (context, i) {
                                                   processos = snapshot.data;
-                                                  print(i);
                                                   return Card(     
                                                     color: processos[i].status == "Aberto" ? Color.fromRGBO(221, 239, 215, 1) 
                                                     : Color.fromRGBO(239, 215, 215, 1),                                     
@@ -209,6 +208,10 @@ class _HomePageState extends State<HomePage> {
                                                                         splashColor: Colors.teal, // inkwell color
                                                                         child: SizedBox(width: 25, height: 25, child: Icon(Icons.zoom_out_map, color: Colors.teal, size: 20,),),
                                                                         onTap: () {
+                                                                          setState(() {
+                                                                            card = processos[i]; 
+                                                                          });                                                        
+                                                                          _pageController.jumpToPage(2);
                                                                           print('zoom');
                                                                         },
                                                                       ),
@@ -440,7 +443,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         CreateArquivo(_pageController),
-        ProcessDetails(_pageController, 0, user, card),
+        ProcessDetails(_pageController, user, card),
       ]
     );
   }
@@ -449,5 +452,12 @@ class _HomePageState extends State<HomePage> {
     List lista = user.pending.toList();
     print(lista[0]);
     return lista[0];
+  }
+
+  Future addCard() async {
+    setState(() {
+      card = processos.last;
+    });
+    print(card.advogado);
   }
 }

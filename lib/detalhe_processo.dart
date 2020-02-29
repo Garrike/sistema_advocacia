@@ -7,10 +7,10 @@ import 'package:projetoPDS/widgets/collapsing_navigation_drawer.dart';
 class ProcessDetails extends StatefulWidget {
   PageController pageController;
   Processo processo;
-  int i;
+  // int i;
   User user;
 
-  ProcessDetails(this.pageController, this.i, this.user, this.processo);
+  ProcessDetails(this.pageController, this.user, this.processo);
 
   @override
   _ProcessDetailsState createState() => _ProcessDetailsState();

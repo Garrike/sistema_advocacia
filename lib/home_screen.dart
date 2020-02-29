@@ -13,7 +13,7 @@ import 'models/arquivos.dart';
 
 User user = User();
 Processo card = Processo();
-List<bool> numberTruthList = [false, true, true, true , true, true];
+List<Processo> processos;
 
 class HomePage extends StatefulWidget {
   @override
@@ -25,9 +25,10 @@ class _HomePageState extends State<HomePage> {
   TextEditingController search = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    card = processos != null ? processos[0] : null;
   }
+
   @override
   Widget build(BuildContext context) {
     return PageView(
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                                               child: ListView.builder(
                                                 itemCount: snapshot.data.length,
                                                 itemBuilder: (context, i) {
-                                                  List<Processo> processos = snapshot.data;
+                                                  processos = snapshot.data;
                                                   print(i);
                                                   return Card(     
                                                     color: processos[i].status == "Aberto" ? Color.fromRGBO(221, 239, 215, 1) 

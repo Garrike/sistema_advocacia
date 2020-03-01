@@ -467,7 +467,11 @@ showAlertDialog(BuildContext context, String idProcesso) {
   Widget continuaButton = FlatButton(
     child: Text("Compartilhar"),
     onPressed:  () {
-      AuthService().addPending(textController.text, idProcesso);
+      var response = AuthService().addPending(textController.text, idProcesso);
+      if(response != null){
+        print('add com sucesso');
+        Navigator.pop(context);
+      }
     },
   );
 

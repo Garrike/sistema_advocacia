@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.hasData) {
                     user = snapshot.data;
+                    print(user.processes.length);
                     return Container(
                       margin: new EdgeInsets.only(left: 60.0),
                       color: Colors.white,
@@ -127,6 +128,7 @@ class _HomePageState extends State<HomePage> {
                                                 itemCount: snapshot.data.length,
                                                 itemBuilder: (context, i) {
                                                   processos = snapshot.data;
+                                                  print(processos[i].advogado);
                                                   return Card(     
                                                     color: processos[i].status == "Aberto" ? Color.fromRGBO(221, 239, 215, 1) 
                                                     : Color.fromRGBO(239, 215, 215, 1),                                     
@@ -450,9 +452,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   getPending() {
-    if(user.pending.isEmpty) return null;
+    if(user.pending.isEmpty || user.pending == null) return null;
     List lista = user.pending.toList();
-    print(lista[0]);
+    // print(lista[0]);
     return lista[0];
   }
 }
@@ -470,7 +472,7 @@ shareProcess(BuildContext context, String idProcesso) {
     onPressed:  () {
       var response = AuthService().addPending(textController.text, idProcesso);
       if(response != null){
-        print('add com sucesso');
+        print('Add com sucesso');
         Navigator.pop(context);
       }
     },

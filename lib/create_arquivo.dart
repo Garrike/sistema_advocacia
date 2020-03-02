@@ -300,7 +300,7 @@ class _CreateArquivoState extends State<CreateArquivo> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          bool check = await AuthService().addArchive(advogado, oab, autor, cep, cidade, comarca, contato, cpf, data, protocolo, uf, vara);
+          bool check = await AuthService().addArchive(advogado, oab, autor, cep, cidade, comarca, contato, cpf, data, protocolo, uf, vara, user);
           if(check){
             setState(() {
               _textController1.clear();

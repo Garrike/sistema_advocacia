@@ -48,12 +48,6 @@ class _LoginPageState extends State<LoginPage> {
     ));  
   }
 
-  @override
-  void initState() {
-    super.initState();
-    this.getJsonData();
-  }
-
   Future<List<String>> getJsonData() async {
     try{
       final response = await http.get(

@@ -113,18 +113,21 @@ class AuthService {
       headers: {"Content-Type": "application/json"},
       body: json.encode(resBody));
 
-    print(json.encode(resBody));
+    // print(json.encode(resBody));
     // int statusCode = response.statusCode;
     // print(statusCode);
-    print(response.body);
+    // print(response.body);
   }
 
-  addArchive(advogado, oab, autor, cep, cidade, comarca, contato, cpf, data, protocolo, uf, vara) async {
+  addArchive(advogado, oab, autor, cep, cidade, comarca, contato, cpf, data, protocolo, uf, vara, User user) async {
+    List list = List<dynamic>();
+    list = [];
     try {
       var resBody = {};
       resBody["advogado"] = advogado;
       resBody["oab"] = oab;
       resBody["autor"] = autor;
+      resBody["archives"] = list;
       resBody["cep"] = cep;
       resBody["cidade"] = cidade;
       resBody["comarca"] = comarca;
@@ -134,11 +137,15 @@ class AuthService {
       resBody["protocolo"] = protocolo;
       resBody["uf"] = uf;
       resBody["vara"] = vara;
+      resBody["status"] = "Aberto";
 
       final response = 
         await http.post("https://projetopds-72fa1.firebaseapp.com/api/v1/processes", 
         headers: {"Content-Type": "application/json"},
         body: json.encode(resBody));
+
+      // print(response.body);
+      await patchProcess(user.processes, user.userid, json.decode(response.body)['id']);
     } catch(e) {
       print(e);
       return false;
@@ -148,46 +155,43 @@ class AuthService {
 
   Future getProcess(User user) async {
     List<Processo> processes = List<Processo>();
-    try{
-      final response = await http.get(
-        'https://projetopds-72fa1.firebaseapp.com/api/v1/processes'
-      );
-      
-      Map<String, dynamic> jsonResponse = json.decode(response.body)['processos'];
-      if(user.processes.isNotEmpty) {
-        jsonResponse.forEach((key, value) {
-          bool result = false;
-          user.processes.forEach((element) {
-            if(element == key.toString()) result = true;
-          });
-          if(result) {
-            print(key);
-            processes.add(Processo(
-              advogado: value['advogado'],
-              oab: value['oab'],
-              autor: value['autor'],
-              cep: value['cep'],
-              cidade: value['cidade'],
-              comarca: value['comarca'],
-              contato: value['contato'],
-              cpf: value['cpf'],
-              data: value['data'],
-              protocolo: value['protocolo'],
-              uf: value['uf'],
-              vara: value['vara'],
-              archives: value['archives'],
-              status: value['status']
-            ));
-          }
-        });
-      } else {
-        return null;
-      }
-    } catch(e) {
-      print(e);
-      return null;
-    }
-    return processes;
+    processes = [];
+    if(user.processes.isNotEmpty) {
+      user.processes.forEach((value) async {
+        print(value);
+        try {
+          final response = await http.get(
+            'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$value'
+          );
+
+          var jsonResponse = json.decode(response.body);
+          // print(jsonResponse);
+          processes.add(Processo(
+            advogado: jsonResponse['advogado'],
+            oab: jsonResponse['oab'],
+            autor: jsonResponse['autor'],
+            cep: jsonResponse['cep'],
+            cidade: jsonResponse['cidade'],
+            comarca: jsonResponse['comarca'],
+            contato: jsonResponse['contato'],
+            cpf: jsonResponse['cpf'],
+            data: jsonResponse['data'],
+            protocolo: jsonResponse['protocolo'],
+            uf: jsonResponse['uf'],
+            vara: jsonResponse['vara'],
+            archives: jsonResponse['archives'],
+            status: jsonResponse['status']
+          ));
+
+          print('json: ${jsonResponse['advogado']}');
+          print('processes: ${processes.length}');
+        } catch(e) {
+          print("Error...");
+        }
+      });
+      print(processes.length);
+      return processes;
+    } else return null;
   }
 
   Future getProcessID(id) async {
@@ -198,8 +202,8 @@ class AuthService {
       );
       
       var jsonResponse = json.decode(response.body);
-      print(jsonResponse);
-      Processo pendente = Processo(
+      // print(jsonResponse);
+      Processo processo = Processo(
         advogado: jsonResponse['advogado'],
         oab: jsonResponse['oab'],
         autor: jsonResponse['autor'],
@@ -215,7 +219,7 @@ class AuthService {
         archives: jsonResponse['archives'],
         status: jsonResponse['status']
       );
-      return pendente;
+      return processo;
     } catch(e) {
       print(e);
       return null;
@@ -238,21 +242,43 @@ class AuthService {
 
   patchPending(pending, idUser, idProcesso) async {
     var resBody = {};
-    print(pending);
+    // print(pending);
     pending.add(idProcesso);
     resBody['pending'] = pending;
     var resp = json.encode(resBody);
-    print(resp);
+    // print(resp);
     try{      
       final response = await http.patch(
         'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser', 
         headers: {"Content-Type": "application/json"},
         body: resp
       );
-      print(response.body);
-      print('passou por aqui');
+      // print(response.body);
+      // print('passou por aqui');
     } catch(e) {
-      print('https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser');
+      // print('https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser');
+      return print(e);
+    }    
+  }
+
+  patchProcess(process, idUser, idProcesso) async {
+    var resBody = {};
+    // print(process);
+    process.add(idProcesso);
+    // print(process);
+    resBody['process'] = process;
+    var resp = json.encode(resBody);
+    // print(resp);
+    try{      
+      final response = await http.patch(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser', 
+        headers: {"Content-Type": "application/json"},
+        body: resp
+      );
+      // print(response.body);
+      // print('passou por aqui');
+    } catch(e) {
+      // print('https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser');
       return print(e);
     }    
   }

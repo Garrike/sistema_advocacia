@@ -113,6 +113,7 @@ class AuthService {
       headers: {"Content-Type": "application/json"},
       body: json.encode(resBody));
 
+    print(json.encode(resBody));
     // int statusCode = response.statusCode;
     // print(statusCode);
     print(response.body);
@@ -153,32 +154,35 @@ class AuthService {
       );
       
       Map<String, dynamic> jsonResponse = json.decode(response.body)['processos'];
-
-      jsonResponse.forEach((key, value) {
-        bool result = false;
-        user.processes.forEach((element) {
-          if(element == key.toString()) result = true;
+      if(user.processes.isNotEmpty) {
+        jsonResponse.forEach((key, value) {
+          bool result = false;
+          user.processes.forEach((element) {
+            if(element == key.toString()) result = true;
+          });
+          if(result) {
+            print(key);
+            processes.add(Processo(
+              advogado: value['advogado'],
+              oab: value['oab'],
+              autor: value['autor'],
+              cep: value['cep'],
+              cidade: value['cidade'],
+              comarca: value['comarca'],
+              contato: value['contato'],
+              cpf: value['cpf'],
+              data: value['data'],
+              protocolo: value['protocolo'],
+              uf: value['uf'],
+              vara: value['vara'],
+              archives: value['archives'],
+              status: value['status']
+            ));
+          }
         });
-        if(result) {
-          print(key);
-          processes.add(Processo(
-            advogado: value['advogado'],
-            oab: value['oab'],
-            autor: value['autor'],
-            cep: value['cep'],
-            cidade: value['cidade'],
-            comarca: value['comarca'],
-            contato: value['contato'],
-            cpf: value['cpf'],
-            data: value['data'],
-            protocolo: value['protocolo'],
-            uf: value['uf'],
-            vara: value['vara'],
-            archives: value['archives'],
-            status: value['status']
-          ));
-        }
-      });
+      } else {
+        return null;
+      }
     } catch(e) {
       print(e);
       return null;
@@ -186,7 +190,8 @@ class AuthService {
     return processes;
   }
 
-  Future getProcessID(String id) async {
+  Future getProcessID(id) async {
+    if(id == null)  return null;
     try{
       final response = await http.get(
         'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$id'

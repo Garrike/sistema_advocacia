@@ -255,7 +255,7 @@ class _HomePageState extends State<HomePage> {
                                                                         child: SizedBox(width: 25, height: 25, child: Icon(Icons.share, color: Colors.teal, size: 20,),),
                                                                         onTap: () {
                                                                           print('shared');
-                                                                          showAlertDialog(context, user.processes[i]);
+                                                                          shareProcess(context, user.processes[i]);
                                                                         },
                                                                       ),
                                                                     ),
@@ -450,13 +450,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   getPending() {
+    if(user.pending.isEmpty) return null;
     List lista = user.pending.toList();
     print(lista[0]);
     return lista[0];
   }
 }
 
-showAlertDialog(BuildContext context, String idProcesso) {
+shareProcess(BuildContext context, String idProcesso) {
   var textController = TextEditingController();
   Widget cancelaButton = FlatButton(
     child: Text("Cancelar"),
@@ -490,6 +491,48 @@ showAlertDialog(BuildContext context, String idProcesso) {
             decoration: InputDecoration(hintText: "ID destinatário"),
             validator: (value) => value.isEmpty ? 'ID obrigatório' : 'ID validado com sucesso',
           ),
+        ],
+      ),
+    ),
+    actions: [
+      cancelaButton,
+      continuaButton,
+    ],
+  );
+
+  //exibe o diálogo
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+deleteProcess(BuildContext context, String idProcesso) {
+  Widget cancelaButton = FlatButton(
+    child: Text("Cancelar"),
+    onPressed:  () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continuaButton = FlatButton(
+    child: Text("Deletar"),
+    onPressed:  () {
+
+    },
+  );
+
+  //configura o AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Deletar Processo", style: TextStyle(fontWeight: FontWeight.bold),),
+    content: Container(
+      height: 70,
+      width: 400,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text("O processo e todos seus arquivos relacionados serão apagados. Tem certeza de que deseja fazer isso ?"),
         ],
       ),
     ),

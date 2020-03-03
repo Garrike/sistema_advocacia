@@ -155,13 +155,13 @@ class AuthService {
 
   Future getProcess(User user) async {
     List<Processo> processes = List<Processo>();
-    processes = [];
+    // processes = [];
     if(user.processes.isNotEmpty) {
-      user.processes.forEach((value) async {
-        print(value);
+      for(var item in user.processes){ 
+        print(item);       
         try {
           final response = await http.get(
-            'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$value'
+            'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$item'
           );
 
           var jsonResponse = json.decode(response.body);
@@ -188,7 +188,7 @@ class AuthService {
         } catch(e) {
           print("Error...");
         }
-      });
+      }
       print(processes.length);
       return processes;
     } else return null;

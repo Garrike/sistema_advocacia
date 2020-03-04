@@ -36,11 +36,8 @@ class AuthService {
       final response = await http.get(
         'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts'
       );
-      // print(response.body);
-      // print('\n\n');
       await FirebaseAuth.instance.currentUser().then((user) {
         userJson = json.decode(response.body)['usuarios'][user.uid];
-        // print(userJson);
         
       });
     } catch(e) {
@@ -57,9 +54,6 @@ class AuthService {
         pending: userJson['pending']
       );
     }
-    // print('\n\n');
-    // print(user.name);
-    // print('\n\n');
     return user;
   }
 
@@ -112,11 +106,6 @@ class AuthService {
       await http.post("https://projetopds-72fa1.firebaseapp.com/api/v1/contacts", 
       headers: {"Content-Type": "application/json"},
       body: json.encode(resBody));
-
-    // print(json.encode(resBody));
-    // int statusCode = response.statusCode;
-    // print(statusCode);
-    // print(response.body);
   }
 
   addArchive(advogado, oab, autor, cep, cidade, comarca, contato, cpf, data, protocolo, uf, vara, User user) async {
@@ -158,7 +147,7 @@ class AuthService {
     // processes = [];
     if(user.processes.isNotEmpty) {
       for(var item in user.processes){ 
-        print(item);       
+        // print(item);       
         try {
           final response = await http.get(
             'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$item'
@@ -183,8 +172,8 @@ class AuthService {
             status: jsonResponse['status']
           ));
 
-          print('json: ${jsonResponse['advogado']}');
-          print('processes: ${processes.length}');
+          // print('json: ${jsonResponse['advogado']}');
+          // print('processes: ${processes.length}');
         } catch(e) {
           print("Error...");
         }
@@ -240,6 +229,62 @@ class AuthService {
     return 'sucesso';
   }
 
+  Future deleteProcess(User user, String idProcesso) async {
+    var resBody = {};
+    // print(pending);
+    user.processes.removeWhere((item) => item == idProcesso);
+    resBody['processes'] = user.processes;
+    var resp = json.encode(resBody);
+    // print(resp);
+    try{      
+      final response = await http.patch(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/${user.userid}', 
+        headers: {"Content-Type": "application/json"},
+        body: resp
+      );
+    } catch(e) {
+      return print(e);
+    }  
+    return idProcesso;
+  }
+
+  Future deletePending(User user, String idProcesso) async {
+    var resBody = {};
+    // print(pending);
+    user.pending.removeWhere((item) => item == idProcesso);
+    resBody['pending'] = user.pending;
+    var resp = json.encode(resBody);
+    // print(resp);
+    try{      
+      final response = await http.patch(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/${user.userid}', 
+        headers: {"Content-Type": "application/json"},
+        body: resp
+      );
+    } catch(e) {
+      return print(e);
+    }  
+    return idProcesso;
+  }
+
+  Future addProcessfromPending(User user, String idProcesso) async { 
+    var resBody = {};
+    user.processes.add(idProcesso);
+    resBody['processes'] = user.processes;
+    var resp = json.encode(resBody);
+    // print(resp);
+    try{      
+      final response = await http.patch(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/${user.userid}', 
+        headers: {"Content-Type": "application/json"},
+        body: resp
+      );
+    } catch(e) {
+      return print(e);
+    }  
+    return idProcesso;
+  }  
+
   patchPending(pending, idUser, idProcesso) async {
     var resBody = {};
     // print(pending);
@@ -266,7 +311,7 @@ class AuthService {
     // print(process);
     process.add(idProcesso);
     // print(process);
-    resBody['process'] = process;
+    resBody['processes'] = process;
     var resp = json.encode(resBody);
     // print(resp);
     try{      

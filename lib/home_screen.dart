@@ -15,13 +15,15 @@ User user = User();
 Processo card = Processo();
 List<Processo> processos;
 
+final _pageController = PageController(initialPage: 0, keepPage: false);
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final _pageController = PageController(initialPage: 0, keepPage: false);
+  // final _pageController = PageController(initialPage: 0, keepPage: false);
   TextEditingController search = TextEditingController();
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.hasData) {
                     user = snapshot.data;
-                    print(user.processes.length);
+                    // print(user.processes.length);
                     return Container(
                       margin: new EdgeInsets.only(left: 60.0),
                       color: Colors.white,
@@ -113,18 +115,18 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                       width: 30,
                                     ),
-                                    FutureBuilder(
-                                      future: AuthService().getProcess(user),
-                                      builder: (context, snapshot) {
-                                        if(snapshot.hasData){                                      
-                                          return Expanded(
-                                            child: Container(                                            
-                                              decoration: BoxDecoration(
-                                                color: Color.fromRGBO(226, 226, 226, 1),
-                                                borderRadius: BorderRadius.circular(8),
-                                              ),
-                                              height: 500,
-                                              child: ListView.builder(
+                                    Expanded(
+                                      child: Container(                                            
+                                        decoration: BoxDecoration(
+                                          color: Color.fromRGBO(226, 226, 226, 1),
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        height: 500,
+                                        child: FutureBuilder(
+                                          future: AuthService().getProcess(user),
+                                          builder: (context, snapshot) {
+                                            if(snapshot.hasData) {
+                                              return ListView.builder(
                                                 itemCount: snapshot.data.length,
                                                 itemBuilder: (context, i) {
                                                   processos = snapshot.data;
@@ -240,6 +242,7 @@ class _HomePageState extends State<HomePage> {
                                                                         ),
                                                                         onTap: () {
                                                                           print('trash');
+                                                                          deleteProcess(context, user.processes[i]);
                                                                         },
                                                                       ),
                                                                     ),
@@ -271,19 +274,19 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                   );
                                                 },
+                                              );
+                                            } 
+                                            return Expanded(
+                                              child: Container(
+                                                height: 100,
+                                                child: Center(
+                                                  child: Text("Não há processos arquivados")
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                        return Expanded(
-                                          child: Container(
-                                            height: 100,
-                                            child: Center(
-                                              child: Text("Não há processos arquivados")
-                                            ),
-                                          ),
-                                        );
-                                      }
+                                            );
+                                          }
+                                        ),
+                                      ),                                        
                                     ),
                                     Container(
                                       width: 80,
@@ -340,8 +343,10 @@ class _HomePageState extends State<HomePage> {
                                                                         borderRadius: new BorderRadius.circular(8.0),
                                                                       ),
                                                                       splashColor: Colors.green,                                                     
-                                                                      onPressed: () {
-                                                                        print('tap accept');
+                                                                      onPressed: () async {                  
+                                                                        AuthService().addProcessfromPending(user, await AuthService().deletePending(user, getPending()));                                  
+                                                                        print('tap accept');   
+                                                                        _pageController.jumpToPage(1);                                                                 
                                                                       },
                                                                       child: Center(
                                                                         child: Text(
@@ -357,7 +362,9 @@ class _HomePageState extends State<HomePage> {
                                                                       ),
                                                                       splashColor: Colors.red,
                                                                       onPressed: () {
+                                                                        AuthService().deletePending(user, getPending());
                                                                         print('tap rejected');
+                                                                        _pageController.jumpToPage(1); 
                                                                       },
                                                                       child: Center(
                                                                         child: Text(
@@ -382,7 +389,7 @@ class _HomePageState extends State<HomePage> {
                                                               mainAxisAlignment: MainAxisAlignment.center,
                                                               children: <Widget>[
                                                                 Text(
-                                                                  '409', 
+                                                                  '${pendente.archives.length}', 
                                                                   style: TextStyle(
                                                                     fontSize: 30,
                                                                     fontWeight: FontWeight.bold
@@ -418,7 +425,7 @@ class _HomePageState extends State<HomePage> {
                                           child: Container(
                                             height: 100,
                                             child: Center(
-                                              child: Text("Não há processos pendentes")
+                                              child: Text("Não há processos arquivados")
                                             ),
                                           ),
                                         );
@@ -521,7 +528,9 @@ deleteProcess(BuildContext context, String idProcesso) {
   Widget continuaButton = FlatButton(
     child: Text("Deletar"),
     onPressed:  () {
-
+      AuthService().deleteProcess(user, idProcesso);
+      Navigator.pop(context);
+      _pageController.jumpToPage(1);
     },
   );
 
@@ -529,7 +538,7 @@ deleteProcess(BuildContext context, String idProcesso) {
   AlertDialog alert = AlertDialog(
     title: Text("Deletar Processo", style: TextStyle(fontWeight: FontWeight.bold),),
     content: Container(
-      height: 70,
+      height: 40,
       width: 400,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

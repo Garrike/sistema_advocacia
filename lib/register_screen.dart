@@ -9,7 +9,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  String email, password, name, cargo;
+  String email, password, name, cargo, dropdownValue = 'Advogado';
 
   final formKey = new GlobalKey<FormState>();
 
@@ -61,16 +61,41 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25, bottom: 20),
+                      padding: EdgeInsets.only(left: 25, right: 25, bottom: 15),
                       child: Container(
                         height: 50,
-                        child: TextFormField(
-                          decoration: InputDecoration(hintText: "Cargo"),
-                          validator: (value) => value.isEmpty ? 'Cargo is required' : null,
-                          onChanged: (value) {
-                            this.cargo = value;
+                        width: 250,
+                        child: DropdownButton<String>(
+                          value: dropdownValue,
+                          icon: Icon(Icons.arrow_downward),
+                          iconSize: 24,
+                          elevation: 16,
+                          underline: Container(
+                            height: 2,
+                            color: Colors.teal,
+                          ),
+                          onChanged: (String newValue) {
+                            setState(() {
+                              dropdownValue = newValue;
+                              this.cargo = newValue;
+                            });
                           },
+                          items: <String>['Advogado', 'Estagiário']
+                            .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Center(child: Text(value)),
+                              );
+                            })
+                            .toList(),
                         ),
+                        // child: TextFormField(
+                        //   decoration: InputDecoration(hintText: "Cargo"),
+                        //   validator: (value) => value.isEmpty ? 'Cargo is required' : null,
+                        //   onChanged: (value) {
+                        //     this.cargo = value;
+                        //   },
+                        // ),
                       ),
                     ),
                     Padding(

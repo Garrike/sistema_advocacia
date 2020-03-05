@@ -104,6 +104,7 @@ class AuthService {
   addUser(email, password, name, office, userid) async {
     List list = List<dynamic>();
     list = [];
+    print('Function addUser: $office');
     var resBody = {};
     resBody["email"] = email;
     resBody["password"] = password;
@@ -338,6 +339,21 @@ class AuthService {
       // print('passou por aqui');
     } catch(e) {
       // print('https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$idUser');
+      return print(e);
+    }    
+  }
+
+  statusProcess(status, idProcesso) async {
+    var resBody = {};
+    resBody['status'] = status;
+    var resp = json.encode(resBody);
+    try{      
+      final response = await http.patch(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$idProcesso', 
+        headers: {"Content-Type": "application/json"},
+        body: resp
+      );
+    } catch(e) {
       return print(e);
     }    
   }

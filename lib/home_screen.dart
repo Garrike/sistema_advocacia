@@ -9,12 +9,14 @@ import 'package:projetoPDS/top_bar.dart';
 import 'package:projetoPDS/widgets/collapsing_navigation_drawer.dart';
 import 'dart:math';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:toast/toast.dart';
 
 import 'auth_service.dart';
 import 'models/arquivos.dart';
 
 User user = User();
 Processo card = Processo();
+String cardID;
 List<Processo> processos;
 
 final _pageController = PageController(initialPage: 0, keepPage: false);
@@ -178,6 +180,7 @@ class _HomePageState extends State<HomePage> {
                                                         print('Card tapped.');
                                                         setState(() {
                                                           card = processos[i]; 
+                                                          cardID = user.processes[i];
                                                         });                                                        
                                                         _pageController.jumpToPage(2);
                                                       },
@@ -314,13 +317,11 @@ class _HomePageState extends State<HomePage> {
                                                 },
                                               );
                                             } 
-                                            return Expanded(
-                                              child: Container(
-                                                height: 100,
-                                                child: Center(
-                                                  child: Text("Não há processos arquivados",
-                                                  style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),)
-                                                ),
+                                            return Container(
+                                              height: 100,
+                                              child: Center(
+                                                child: Text("Não há processos arquivados",
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),)
                                               ),
                                             );
                                           }
@@ -498,18 +499,28 @@ class _HomePageState extends State<HomePage> {
           ),
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.exit_to_app),
-            onPressed: () { AuthService().signOut(); },
+            onPressed: () { 
+              AuthService().signOut(); 
+              Toast.show(
+                "Logout com sucesso", 
+                context, 
+                duration: Toast.LENGTH_LONG, 
+                gravity:  Toast.CENTER,
+                backgroundColor: Colors.teal
+              );
+            },
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         ),
         CreateArquivo(_pageController),
-        ProcessDetails(_pageController, user, card),
+        ProcessDetails(_pageController, user, card, cardID),
       ]
     );
   }
 
   getPending() {
-    if(user.pending.isEmpty || user.pending == null) return null;
+    print('Function getPedin: ${user.pending}');
+    if(user.pending == null || user.pending.isEmpty) return null;
     List lista = user.pending.toList();
     // print(lista[0]);
     return lista[0];

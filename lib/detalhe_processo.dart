@@ -9,10 +9,10 @@ import 'package:projetoPDS/widgets/collapsing_navigation_drawer.dart';
 class ProcessDetails extends StatefulWidget {
   PageController pageController;
   Processo processo;
-  // int i;
+  String processoID;
   User user;
 
-  ProcessDetails(this.pageController, this.user, this.processo);
+  ProcessDetails(this.pageController, this.user, this.processo, this.processoID);
 
   @override
   _ProcessDetailsState createState() => _ProcessDetailsState();
@@ -27,7 +27,8 @@ class _ProcessDetailsState extends State<ProcessDetails> {
           TopBar(),
           widget.processo == null ?
           Center(
-            child: Text('Não há pesquisas recentes'),
+            child: Text('Não há pesquisas recentes',
+            style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),),
           ) :
           ListView(
             children: <Widget>[
@@ -46,10 +47,54 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                 ),
               ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[                  
+                  Container(
+                    padding: const EdgeInsets.only(left: 90, top: 40.0),
+                    child: FlatButton(                      
+                      color: widget.processo.status == "Fechado" ? Color.fromRGBO(221, 239, 215, 1)
+                            : Color.fromRGBO(239, 215, 215, 1),
+                      textColor: Colors.black,
+                      disabledColor: widget.processo.status == "Fechado" ? Colors.green
+                            : Colors.red,
+                      disabledTextColor: Colors.black,
+                      child: widget.processo.status == "Aberto" 
+                        ? Text(
+                          "Finaliza Processo", 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                          ),
+                        ) 
+                        : Text(
+                          "Reabrir Processo", 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15
+                          ),
+                        ),     
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(2.0),
+                        // side: BorderSide(color: Colors.red)
+                      ),                 
+                      onPressed:  () {
+                        if(widget.processo.status == "Aberto") {
+                          AuthService().statusProcess('Fechado', widget.processoID);
+                          widget.pageController.jumpToPage(0); 
+                        } else {
+                          AuthService().statusProcess('Aberto', widget.processoID);
+                          widget.pageController.jumpToPage(0); 
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
                 children: <Widget>[
                   Expanded(                
                     child: Container(
-                      margin:const EdgeInsets.only(left: 90, top: 100.0, right: 30, bottom: 45),
+                      margin:const EdgeInsets.only(left: 90, top: 15.0, right: 30, bottom: 45),
                       child: Card(     
                         color: widget.processo.status == "Aberto" ? Color.fromRGBO(221, 239, 215, 1)
                         : Color.fromRGBO(239, 215, 215, 1),                                     

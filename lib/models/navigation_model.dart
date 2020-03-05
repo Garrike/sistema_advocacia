@@ -15,4 +15,5 @@ List<NavigationModel> navigationItens = [
   NavigationModel(title: "Comunidade", icon: Icons.people, page: 3),
   NavigationModel(title: "Compartilhar", icon: Icons.share, page: 4),
   NavigationModel(title: "Configurações", icon: Icons.settings, page: 5),
+  NavigationModel(title: "Sair", icon: Icons.exit_to_app, page: 6),
 ];

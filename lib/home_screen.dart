@@ -7,6 +7,8 @@ import 'package:projetoPDS/models/user.dart';
 import 'package:projetoPDS/theme.dart';
 import 'package:projetoPDS/top_bar.dart';
 import 'package:projetoPDS/widgets/collapsing_navigation_drawer.dart';
+import 'dart:math';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'auth_service.dart';
 import 'models/arquivos.dart';
@@ -25,10 +27,46 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // final _pageController = PageController(initialPage: 0, keepPage: false);
   TextEditingController search = TextEditingController();
+  List<charts.Series> seriesList;
+
+  static List<charts.Series<Sales, String>> _createRandomData() {
+    final random = Random();
+    final desktopSalesData = [
+      Sales('Novembro', random.nextInt(100)),
+      Sales('Dezembro', random.nextInt(100)),
+      Sales('Janeiro', random.nextInt(100)),
+      Sales('Fevereiro', random.nextInt(100)),
+      Sales('Março', random.nextInt(100)),
+    ];
+
+    return [
+      charts.Series<Sales, String>(
+        id: 'Sales',
+        domainFn: (Sales sales, _) => sales.month,
+        measureFn: (Sales sales, _) => sales.sales,
+        data: desktopSalesData,
+        fillColorFn: (Sales sales, _) {
+          return (sales.month == 'Março')
+            ? charts.MaterialPalette.teal.shadeDefault
+            : charts.MaterialPalette.green.shadeDefault;
+        },
+      )
+    ];
+  }
+
+  barChart() {
+    return charts.BarChart(
+      seriesList,
+      animate: true,
+      // vertical: true,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
     card = null;
+    seriesList = _createRandomData();
   }
 
   @override
@@ -280,7 +318,8 @@ class _HomePageState extends State<HomePage> {
                                               child: Container(
                                                 height: 100,
                                                 child: Center(
-                                                  child: Text("Não há processos arquivados")
+                                                  child: Text("Não há processos arquivados",
+                                                  style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),)
                                                 ),
                                               ),
                                             );
@@ -291,15 +330,16 @@ class _HomePageState extends State<HomePage> {
                                     Container(
                                       width: 80,
                                     ),
-                                    FutureBuilder(
-                                      future: AuthService().getProcessID(getPending().toString()),
-                                      builder: (context, snapshot) {
-                                        if(snapshot.hasData) {
-                                          Processo pendente = snapshot.data;
-                                          return Expanded(
-                                            child: Column(
-                                              children: <Widget>[
-                                                Padding(
+                                    Expanded(
+                                      child: Column(
+                                        children: <Widget>[
+                                          FutureBuilder(
+                                            future: AuthService().getProcessID(getPending()),
+                                            builder: (context, snapshot) {                                               
+                                              if(snapshot.data != null) {
+                                                print("pending...");
+                                                Processo pendente = snapshot.data;
+                                                return Padding(
                                                   padding: const EdgeInsets.only(bottom: 30),
                                                   child: Card(     
                                                     color: Color.fromRGBO(239, 215, 215, 1),                                     
@@ -409,28 +449,33 @@ class _HomePageState extends State<HomePage> {
                                                       ),
                                                     ),
                                                   ),
-                                                ),  
-                                                Container(
-                                                  height: 365,                                                  
-                                                  decoration: BoxDecoration(
-                                                    color: Color.fromRGBO(226, 226, 226, 1),
-                                                    borderRadius: BorderRadius.circular(8),
+                                                );
+                                              } 
+                                              return Container(
+                                                height: 130,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Não há processos pendentes",
+                                                    style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
                                                   ),
-                                                ),                    
-                                              ],
+                                                ),
+                                              );
+                                            }
+                                          ),  
+                                          Container(
+                                            height: 365,                                                  
+                                            decoration: BoxDecoration(
+                                              color: Color.fromRGBO(226, 226, 226, 1),
+                                              borderRadius: BorderRadius.circular(8),
                                             ),
-                                          );
-                                        }
-                                        return Expanded(
-                                          child: Container(
-                                            height: 100,
-                                            child: Center(
-                                              child: Text("Não há processos arquivados")
+                                            child: Padding(
+                                              padding: EdgeInsets.all(20),
+                                              child: barChart(),
                                             ),
-                                          ),
-                                        );
-                                      }
-                                    ),
+                                          ),                    
+                                        ],
+                                      ),
+                                    ),                                    
                                     Container(
                                       width: 30,
                                     ),
@@ -451,6 +496,11 @@ class _HomePageState extends State<HomePage> {
               CollapsingNavigationDrawer(_pageController, 0, user),
             ]
           ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.exit_to_app),
+            onPressed: () { AuthService().signOut(); },
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         ),
         CreateArquivo(_pageController),
         ProcessDetails(_pageController, user, card),
@@ -560,4 +610,11 @@ deleteProcess(BuildContext context, String idProcesso) {
       return alert;
     },
   );
+}
+
+class Sales {
+  final String month;
+  final int sales;
+
+  Sales(this.month, this.sales);
 }

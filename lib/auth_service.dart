@@ -57,6 +57,17 @@ class AuthService {
     return user;
   }
 
+  getUserOffice(String id) async {
+    try{
+      final response = await http.get(
+        'https://projetopds-72fa1.firebaseapp.com/api/v1/contacts/$id'
+      );
+      return json.decode(response.body)['office'];
+    } catch(e) {
+      return null;
+    }
+  }
+
   //Sign out
   Future signOut() async {
     FirebaseAuth.instance.signOut();
@@ -184,7 +195,10 @@ class AuthService {
   }
 
   Future getProcessID(id) async {
-    if(id == null)  return null;
+    if(id == null) {
+      print("veio null..");
+      return null;
+    }
     try{
       final response = await http.get(
         'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$id'

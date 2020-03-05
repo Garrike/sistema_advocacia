@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projetoPDS/models/arquivos.dart';
+import 'package:toast/toast.dart';
 
 import 'auth_service.dart';
+
+BuildContext mainContext;
+bool _isEnabled;
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -12,6 +17,12 @@ class _RegisterPageState extends State<RegisterPage> {
   String email, password, name, cargo, dropdownValue = 'Advogado';
 
   final formKey = new GlobalKey<FormState>();
+
+  void initState() {
+    super.initState();
+    _isEnabled = true;
+    // verificar(context);
+  }
 
   checkFields() {
     final form = formKey.currentState;
@@ -34,6 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    mainContext = context;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -52,6 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Container(
                         height: 50,
                         child: TextFormField(
+                          enabled: _isEnabled,
                           decoration: InputDecoration(hintText: "Name"),
                           validator: (value) => value.isEmpty ? 'Name is required' : null,
                           onChanged: (value) {
@@ -65,37 +78,37 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Container(
                         height: 50,
                         width: 250,
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          icon: Icon(Icons.arrow_downward),
-                          iconSize: 24,
-                          elevation: 16,
-                          underline: Container(
-                            height: 2,
-                            color: Colors.teal,
-                          ),
-                          onChanged: (String newValue) {
-                            setState(() {
-                              dropdownValue = newValue;
-                              this.cargo = newValue;
-                            });
-                          },
-                          items: <String>['Advogado', 'Estagiário']
-                            .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Center(child: Text(value)),
-                              );
-                            })
-                            .toList(),
-                        ),
-                        // child: TextFormField(
-                        //   decoration: InputDecoration(hintText: "Cargo"),
-                        //   validator: (value) => value.isEmpty ? 'Cargo is required' : null,
-                        //   onChanged: (value) {
-                        //     this.cargo = value;
+                        // child: DropdownButton<String>(
+                        //   value: dropdownValue,
+                        //   icon: Icon(Icons.arrow_downward),
+                        //   iconSize: 24,
+                        //   elevation: 16,
+                        //   underline: Container(
+                        //     height: 2,
+                        //     color: Colors.teal,
+                        //   ),
+                        //   onChanged: (String newValue) {
+                        //     setState(() {
+                        //       dropdownValue = newValue;
+                        //       this.cargo = newValue;
+                        //     });
                         //   },
+                        //   items: <String>['Advogado', 'Estagiário']
+                        //     .map<DropdownMenuItem<String>>((String value) {
+                        //       return DropdownMenuItem<String>(
+                        //         value: value,
+                        //         child: Center(child: Text(value)),
+                        //       );
+                        //     })
+                        //     .toList(),
                         // ),
+                        child: TextFormField(
+                          decoration: InputDecoration(hintText: "Cargo"),
+                          validator: (value) => value.isEmpty ? 'Cargo is required' : null,
+                          onChanged: (value) {
+                            this.cargo = value;
+                          },
+                        ),
                       ),
                     ),
                     Padding(
@@ -103,6 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Container(
                         height: 50,
                         child: TextFormField(
+                          enabled: _isEnabled,
                           decoration: InputDecoration(hintText: "Email"),
                           validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
                           onChanged: (value) {
@@ -116,6 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Container(
                         height: 50,
                         child: TextFormField(
+                          enabled: _isEnabled,
                           obscureText: true,
                           decoration: InputDecoration(hintText: "Password"),
                           validator: (value) => value.isEmpty ? 'Password is required' : null,
@@ -126,14 +141,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     InkWell(
-                      onTap: () async {
-                        if(checkFields()) {
-                          bool check = await AuthService().createUser(email, password, name, cargo);
-                          if(check){
-                            await AuthService().signIn(email, password);
-                            Navigator.pop(context);
-                          }
-                        }
+                      onTap: () async {   
+                        print(this.cargo);                     
+                        verificar(context);
                       },
                       child: Container(
                         height: 40,
@@ -160,6 +170,83 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Icon(Icons.arrow_back),
         backgroundColor: Colors.green,
       ),
+    );
+  }
+
+  verificar(BuildContext context) {
+    var textController = TextEditingController();
+    Widget cancelaButton = FlatButton(
+      child: Text("Cancelar"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continuaButton = FlatButton(
+      child: Text("Verificar"),
+      onPressed:  () async {
+        var response = await AuthService().getUserOffice(textController.text);
+        if(response == 'Advogado'){
+          
+          Navigator.pop(context);
+          setState(() {
+            _isEnabled = true;
+          });                    
+          if(checkFields()) {
+            bool check = await AuthService().createUser(email, password, name, cargo);
+            if(check){
+              await AuthService().signIn(email, password);
+              Navigator.pop(context);
+            }
+          } 
+          print('Add com sucesso');
+        } else {
+          setState(() {
+            _isEnabled = false;
+          });          
+          Navigator.pop(context);
+          Navigator.pop(mainContext);
+          print("Permissão Negada");
+          Toast.show(
+            "Permissão Negada", 
+            context, 
+            duration: Toast.LENGTH_LONG, 
+            gravity:  Toast.CENTER,
+            backgroundColor: Colors.teal
+          );
+        }
+      },
+    );
+
+    //configura o AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Verificação de Registro", style: TextStyle(fontWeight: FontWeight.bold),),
+      content: Container(
+        height: 70,
+        width: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("Informe o ID :"),
+            TextFormField(
+              controller: textController,
+              decoration: InputDecoration(hintText: "ID Responsável"),
+              validator: (value) => value.isEmpty ? 'ID obrigatório' : 'ID validado com sucesso',
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        cancelaButton,
+        continuaButton,
+      ],
+    );
+
+    //exibe o diálogo
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }

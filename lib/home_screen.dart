@@ -18,6 +18,8 @@ User user = User();
 Processo card = Processo();
 String cardID;
 List<Processo> processos;
+TextEditingController search = TextEditingController();
+bool issearch;
 
 final _pageController = PageController(initialPage: 0, keepPage: false);
 
@@ -28,7 +30,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // final _pageController = PageController(initialPage: 0, keepPage: false);
-  TextEditingController search = TextEditingController();
+  
   List<charts.Series> seriesList;
 
   static List<charts.Series<Sales, String>> _createRandomData() {
@@ -68,6 +70,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     card = null;
+    issearch = false;
     seriesList = _createRandomData();
   }
 
@@ -85,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, AsyncSnapshot<User> snapshot) {
                   if (snapshot.hasData) {
                     user = snapshot.data;
+                    // processos = AuthService().getProcess(user);
                     // print(user.processes.length);
                     return Container(
                       margin: new EdgeInsets.only(left: 60.0),
@@ -142,6 +146,24 @@ class _HomePageState extends State<HomePage> {
                                             child: Icon(Icons.search), 
                                             onTap: () {
                                               print(search.text);
+                                              setState(() {
+                                                issearch = true;
+                                                // AuthService().getProcess(user);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 40,
+                                          height: 40,
+                                          child: InkWell(
+                                            child: Icon(Icons.close), 
+                                            onTap: () {
+                                              print(search.text);
+                                              setState(() {
+                                                issearch = false;
+                                                // AuthService().getProcess(user);
+                                              });
                                             },
                                           ),
                                         ),

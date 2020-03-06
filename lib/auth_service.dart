@@ -155,8 +155,8 @@ class AuthService {
   }
 
   Future getProcess(User user) async {
-    List<Processo> processes = List<Processo>();
-    // processes = [];
+    // List<Processo> processes = List<Processo>();
+    processos = [];
     if(user.processes.isNotEmpty) {
       for(var item in user.processes){ 
         // print(item);       
@@ -164,34 +164,54 @@ class AuthService {
           final response = await http.get(
             'https://projetopds-72fa1.firebaseapp.com/api/v1/processes/$item'
           );
-
+          
           var jsonResponse = json.decode(response.body);
           // print(jsonResponse);
-          processes.add(Processo(
-            advogado: jsonResponse['advogado'],
-            oab: jsonResponse['oab'],
-            autor: jsonResponse['autor'],
-            cep: jsonResponse['cep'],
-            cidade: jsonResponse['cidade'],
-            comarca: jsonResponse['comarca'],
-            contato: jsonResponse['contato'],
-            cpf: jsonResponse['cpf'],
-            data: jsonResponse['data'],
-            protocolo: jsonResponse['protocolo'],
-            uf: jsonResponse['uf'],
-            vara: jsonResponse['vara'],
-            archives: jsonResponse['archives'],
-            status: jsonResponse['status']
-          ));
-
+          if(search.text.isEmpty && issearch == false) {
+            processos.add(Processo(
+              advogado: jsonResponse['advogado'],
+              oab: jsonResponse['oab'],
+              autor: jsonResponse['autor'],
+              cep: jsonResponse['cep'],
+              cidade: jsonResponse['cidade'],
+              comarca: jsonResponse['comarca'],
+              contato: jsonResponse['contato'],
+              cpf: jsonResponse['cpf'],
+              data: jsonResponse['data'],
+              protocolo: jsonResponse['protocolo'],
+              uf: jsonResponse['uf'],
+              vara: jsonResponse['vara'],
+              archives: jsonResponse['archives'],
+              status: jsonResponse['status']
+            ));
+          } else {
+            if(jsonResponse['autor'] == search.text || jsonResponse['advogado'] == search.text) {
+              processos.add(Processo(
+                advogado: jsonResponse['advogado'],
+                oab: jsonResponse['oab'],
+                autor: jsonResponse['autor'],
+                cep: jsonResponse['cep'],
+                cidade: jsonResponse['cidade'],
+                comarca: jsonResponse['comarca'],
+                contato: jsonResponse['contato'],
+                cpf: jsonResponse['cpf'],
+                data: jsonResponse['data'],
+                protocolo: jsonResponse['protocolo'],
+                uf: jsonResponse['uf'],
+                vara: jsonResponse['vara'],
+                archives: jsonResponse['archives'],
+                status: jsonResponse['status']
+              ));
+            }
+          }
           // print('json: ${jsonResponse['advogado']}');
           // print('processes: ${processes.length}');
         } catch(e) {
           print("Error...");
         }
       }
-      print(processes.length);
-      return processes;
+      print(processos.length);
+      return processos;
     } else return null;
   }
 

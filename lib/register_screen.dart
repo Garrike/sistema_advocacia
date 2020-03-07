@@ -48,126 +48,145 @@ class _RegisterPageState extends State<RegisterPage> {
     mainContext = context;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Container(
-          height: 350.0,
-          width: 300.0,
-          child:  Column(
-            children: <Widget>[
-              Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25, bottom: 20),
-                      child: Container(
-                        height: 50,
-                        child: TextFormField(
-                          enabled: _isEnabled,
-                          decoration: InputDecoration(hintText: "Name"),
-                          validator: (value) => value.isEmpty ? 'Name is required' : null,
-                          onChanged: (value) {
-                            this.name = value;
-                          },
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.teal
+        ),
+        child: Center(
+          child: Container(
+            height: 500.0,
+            width: 380.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child:  Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text("CADASTRO", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 25, right: 25, bottom: 20, top: 40),
+                        child: Container(
+                          height: 50,
+                          child: TextFormField(
+                            enabled: _isEnabled,
+                            decoration: InputDecoration(hintText: "Nome"),
+                            validator: (value) => value.isEmpty ? 'Nome obrigatório' : null,
+                            onChanged: (value) {
+                              this.name = value;
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25, bottom: 15),
-                      child: Container(
-                        height: 50,
-                        width: 250,
-                        // child: DropdownButton<String>(
-                        //   value: dropdownValue,
-                        //   icon: Icon(Icons.arrow_downward),
-                        //   iconSize: 24,
-                        //   elevation: 16,
-                        //   underline: Container(
-                        //     height: 2,
-                        //     color: Colors.teal,
-                        //   ),
-                        //   onChanged: (String newValue) {
-                        //     setState(() {
-                        //       dropdownValue = newValue;
-                        //       this.cargo = newValue;
-                        //     });
-                        //   },
-                        //   items: <String>['Advogado', 'Estagiário']
-                        //     .map<DropdownMenuItem<String>>((String value) {
-                        //       return DropdownMenuItem<String>(
-                        //         value: value,
-                        //         child: Center(child: Text(value)),
-                        //       );
-                        //     })
-                        //     .toList(),
-                        // ),
-                        child: TextFormField(
-                          decoration: InputDecoration(hintText: "Cargo"),
-                          validator: (value) => value.isEmpty ? 'Cargo is required' : null,
-                          onChanged: (value) {
-                            this.cargo = value;
-                          },
+                      ListTile(
+                        // leading: Icon(Icons.arrow_downward),
+                        subtitle: Padding(
+                          padding: EdgeInsets.only(left: 25, right: 25, bottom: 15),
+                          child: Center(
+                            child: Container(
+                              height: 50,
+                              width: 380,
+                              child: DropdownButton<String>(
+                                value: dropdownValue,
+                                isExpanded: true,
+                                // icon: Icon(Icons.arrow_downward),
+                                // iconSize: 24,
+                                elevation: 16,
+                                underline: Container(
+                                  height: 2,
+                                  color: Colors.teal,
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue;
+                                    this.cargo = newValue;
+                                  });
+                                },
+                                items: <String>['Advogado', 'Estagiário']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Center(child: Text(value)),
+                                    );
+                                  })
+                                  .toList(),
+                              ),
+                              // child: TextFormField(
+                              //   decoration: InputDecoration(hintText: "Cargo"),
+                              //   validator: (value) => value.isEmpty ? 'Cargo is required' : null,
+                              //   onChanged: (value) {
+                              //     this.cargo = value;
+                              //   },
+                              // ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25),
-                      child: Container(
-                        height: 50,
-                        child: TextFormField(
-                          enabled: _isEnabled,
-                          decoration: InputDecoration(hintText: "Email"),
-                          validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value.trim()),
-                          onChanged: (value) {
-                            this.email = value;
-                          },
+                      Padding(
+                        padding: EdgeInsets.only(left: 25, right: 25),
+                        child: Container(
+                          height: 50,
+                          child: TextFormField(
+                            enabled: _isEnabled,
+                            decoration: InputDecoration(hintText: "Email"),
+                            validator: (value) => value.isEmpty ? 'Email obrigatório' : validateEmail(value.trim()),
+                            onChanged: (value) {
+                              this.email = value;
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 5),
-                      child: Container(
-                        height: 50,
-                        child: TextFormField(
-                          enabled: _isEnabled,
-                          obscureText: true,
-                          decoration: InputDecoration(hintText: "Password"),
-                          validator: (value) => value.isEmpty ? 'Password is required' : null,
-                          onChanged: (value) {
-                            this.password = value;
-                          },
+                      Padding(
+                        padding: EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 30),
+                        child: Container(
+                          height: 50,
+                          child: TextFormField(
+                            enabled: _isEnabled,
+                            obscureText: true,
+                            decoration: InputDecoration(hintText: "Senha"),
+                            validator: (value) => value.isEmpty ? 'Senha obrigatória' : null,
+                            onChanged: (value) {
+                              this.password = value;
+                            },
+                          ),
                         ),
                       ),
-                    ),
-                    InkWell(
-                      onTap: () async {   
-                        print(this.cargo);                     
-                        verificar(context);
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(0.2),
-                        ),
-                        child: Center(
-                          child: Text('Sign in'),
+                      InkWell(
+                        onTap: () async {   
+                          print(this.cargo);                     
+                          verificar(context);
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.2),
+                          ),
+                          child: Center(
+                            child: Text('Sign in'),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.pop(context);
         },
-        child: Icon(Icons.arrow_back),
+        label: Text('Login', style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),),
+        icon: Icon(Icons.arrow_back_ios),
         backgroundColor: Colors.green,
       ),
     );

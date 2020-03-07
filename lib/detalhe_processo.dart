@@ -74,15 +74,15 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                           ),
                         ),     
                       shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(2.0),
+                        borderRadius: new BorderRadius.circular(4.0),
                         // side: BorderSide(color: Colors.red)
                       ),                 
-                      onPressed:  () {
+                      onPressed:  () async {
                         if(widget.processo.status == "Aberto") {
-                          AuthService().statusProcess('Fechado', widget.processoID);
+                          await AuthService().statusProcess('Fechado', widget.processoID);
                           widget.pageController.jumpToPage(0); 
                         } else {
-                          AuthService().statusProcess('Aberto', widget.processoID);
+                          await AuthService().statusProcess('Aberto', widget.processoID);
                           widget.pageController.jumpToPage(0); 
                         }
                       },
@@ -173,24 +173,7 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 20.0, bottom: 8),
-                                      child: ClipOval(
-                                        child: Material(
-                                          elevation: 60,
-                                          color: Colors.white, // button color                                                                    
-                                          shadowColor: Colors.black,
-                                          child: InkWell(
-                                            splashColor: Colors.teal, // inkwell color
-                                            child: SizedBox(width: 25, height: 25, child: Icon(Icons.zoom_out_map, color: Colors.teal, size: 20,),),
-                                            onTap: () {
-                                              print('zoom');
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 20.0, bottom: 8),
+                                      padding: const EdgeInsets.only(right: 20.0, bottom: 15),
                                       child: ClipOval(
                                         child: Material(
                                           elevation: 60,
@@ -209,6 +192,7 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                                             ),
                                             onTap: () {
                                               print('trash');
+                                              deleteProcess(context, widget.processoID);
                                             },
                                           ),
                                         ),
@@ -226,7 +210,7 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                                             child: SizedBox(width: 25, height: 25, child: Icon(Icons.share, color: Colors.teal, size: 20,),),
                                             onTap: () {
                                               print('shared');
-                                              showAlertDialog(context);
+                                              shareProcess(context, widget.processoID);
                                             },
                                           ),
                                         ),
@@ -542,7 +526,7 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                             ),
                           ),
                           Expanded(
-                            child: Scrollbar(
+                            child: widget.processo.archives.isNotEmpty ? Scrollbar(
                               child: ListView.builder(
                                 itemCount: widget.processo.archives.length,
                                 itemBuilder: (context, index) {
@@ -643,6 +627,13 @@ class _ProcessDetailsState extends State<ProcessDetails> {
                                   );
                                 },
                               ),
+                            ) : 
+                            Container(
+                              height: 50,
+                              child: Center(
+                                child: Text('Não há arquivos nesse processo',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),),
+                              ),
                             ),
                           ),
                         ],
@@ -662,7 +653,8 @@ class _ProcessDetailsState extends State<ProcessDetails> {
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  shareProcess(BuildContext context, String idProcesso) {
+    var textController = TextEditingController();
     Widget cancelaButton = FlatButton(
       child: Text("Cancelar"),
       onPressed:  () {
@@ -670,14 +662,78 @@ class _ProcessDetailsState extends State<ProcessDetails> {
       },
     );
     Widget continuaButton = FlatButton(
-      child: Text("Continar"),
-      onPressed:  () {},
+      child: Text("Compartilhar"),
+      onPressed:  () {
+        var response = AuthService().addPending(textController.text, idProcesso);
+        if(response != null){
+          print('Add com sucesso');
+          Navigator.pop(context);
+        }
+      },
     );
 
     //configura o AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("AlertDialog"),
-      content: Text("Deseja continuar aprendendo Flutter ?"),
+      title: Text("Compartilhar Processo", style: TextStyle(fontWeight: FontWeight.bold),),
+      content: Container(
+        height: 70,
+        width: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("Informe o ID do advogado:"),
+            TextFormField(
+              controller: textController,
+              decoration: InputDecoration(hintText: "ID destinatário"),
+              validator: (value) => value.isEmpty ? 'ID obrigatório' : 'ID validado com sucesso',
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        cancelaButton,
+        continuaButton,
+      ],
+    );
+
+    //exibe o diálogo
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  deleteProcess(BuildContext context, String idProcesso) {
+    Widget cancelaButton = FlatButton(
+      child: Text("Cancelar"),
+      onPressed:  () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continuaButton = FlatButton(
+      child: Text("Deletar"),
+      onPressed:  () {
+        AuthService().deleteProcess(user, idProcesso);
+        Navigator.pop(context);
+        widget.pageController.animateToPage(0, duration: Duration(seconds: 1), curve: Curves.elasticInOut);
+      },
+    );
+
+    //configura o AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Deletar Processo", style: TextStyle(fontWeight: FontWeight.bold),),
+      content: Container(
+        height: 40,
+        width: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("O processo e todos seus arquivos relacionados serão apagados. Tem certeza de que deseja fazer isso ?"),
+          ],
+        ),
+      ),
       actions: [
         cancelaButton,
         continuaButton,

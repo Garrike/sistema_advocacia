@@ -8,6 +8,8 @@ import '../auth_service.dart';
 import '../home_screen.dart';
 import 'collapsing_list_title.dart';
 
+bool isCollapsed = true;
+
 class CollapsingNavigationDrawer extends StatefulWidget {
   final PageController pageController;
   final int index;
@@ -23,7 +25,7 @@ class _CollapsingNavigationDrawerState extends State<CollapsingNavigationDrawer>
 
   double maxWidth = 220;
   double minWidth = 60;
-  bool isCollapsed = true;
+  
   AnimationController _animationController;
   Animation<double> widthAnimation;
   int currentSelectedIndex;

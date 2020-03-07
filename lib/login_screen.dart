@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(left: 30, right: 30, top: 30),
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 60),
                         child: Container(
                           height: 45,
                           decoration: BoxDecoration(
@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 5),
+                        padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 30),
                         child: Container(
                           height: 45,
                           decoration: BoxDecoration(
@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(left: 12.0, right: 12.0),
                             child: TextFormField(
                               obscureText: true,
-                              decoration: InputDecoration(hintText: "Password"),
+                              decoration: InputDecoration(hintText: "Senha"),
                               //validator: (value) => value.isEmpty ? 'Password is required' : null,
                               onChanged: (value) {
                                 this.password = value;
@@ -184,11 +184,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context)=> (RegisterPage())));
         },
-        child: Icon(Icons.create),
+        label: Text('Criar Conta', style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,),),
+        icon: Icon(Icons.person_add),
         backgroundColor: Colors.green,
       ),
     );
